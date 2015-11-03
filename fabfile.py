@@ -6,11 +6,13 @@ from fabric.context_managers import hide
 def minishell():
     try:
         cmd = raw_input("console> ")
-        if cmd == 'status':
+        if cmd == "status":
             result = local("docker exec -it h1 nfd-status", capture=True)
             print yellow("*** NDN status", bold=True)
             print result
 	    print
+        else:
+            print cmd + ": Command not found"
         minishell()
     except (KeyboardInterrupt, EOFError):
         print
