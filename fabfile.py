@@ -3,10 +3,13 @@ from fabric.api import local
 from fabric.colors import green, magenta, yellow
 from fabric.context_managers import hide
 
+active_host = {}
+
 def up():
     with hide('running'):
         #print green(local("docker-compose up -d", capture=True))
-        pass
+        active_host['h1'] = local("docker run -d --name h1 rf37535/nfd nfd")
+        print green(local("docker logs " + active_host['h1']))
 
 def mn(topology=3):
     with hide('running'):
