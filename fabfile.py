@@ -3,14 +3,23 @@ from fabric.api import local
 from fabric.colors import green, magenta, yellow
 from fabric.context_managers import hide
 
+def minishell():
+    try:
+        cmd = raw_input("console> ")
+        if cmd == 'status':
+            result = local("docker exec -it h1 nfd-status", capture=True)
+            print yellow("*** NDN status", bold=True)
+            print result
+	    print
+        minishell()
+    except (KeyboardInterrupt, EOFError):
+        print
+        down()
+
 def up():
     with hide('running'):
         local("docker run -d --name h1 rf37535/nfd nfd", capture=True)
-        result = local("docker exec -it h1 nfd-status", capture=True)
-        print yellow("*** NDN status", bold=True)
-        print result
-	print
-        down()
+        minishell()
 
 
 def down():
