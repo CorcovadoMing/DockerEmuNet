@@ -1,7 +1,7 @@
 # EmuNet
-*Docker-based Network Emulator*
+*Docker-based generic network emulator*
 
-##### The purpose of this project is to emulate the different type of network, which include SDN and NDN
+##### The purpose of this project is to emulate the different type of networking which include SDN and NDN by using the docker as the virtualized host
 
 
 ### Dependencys
