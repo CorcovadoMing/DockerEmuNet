@@ -25,19 +25,24 @@ def minishell():
         print
         down()
 
+def addSwitch(switches, mode="secure"):
+    for s in switches:
+        local("sudo ovs-vsctl add-br " + s)
+        local("sudo ovs-vsctl set-fail-mode " + s + " " + mode)
+
+def addHost(hosts):
+    for h in hosts:
+        local("docker run -d --name " + h + " rf37535/nfd nfd", capture=True)
+
 def up():
     with hide('running'):
-        local("sudo ovs-vsctl add-br s1")
-        local("sudo ovs-vsctl add-br s2")
+        addSwitch(["s1", "s2"])
         local("sudo ip link add name s1-eth1 type veth peer name s2-eth1")
         local("sudo ovs-vsctl add-port s1 s1-eth1")
         local("sudo ovs-vsctl add-port s2 s2-eth1")
-        local("docker run -d --name h1 rf37535/nfd nfd", capture=True)
-        local("docker run -d --name h2 rf37535/nfd nfd", capture=True)
+        addHost(["h1", "h2"])
         local("sudo pipework s1 -l s1-eth0 h1 192.168.1.2/24")
         local("sudo pipework s2 -l s2-eth0 h2 192.168.1.3/24")
-        local("sudo ovs-vsctl set-fail-mode s1 secure")
-        local("sudo ovs-vsctl set-fail-mode s2 secure")
         minishell()
 
 
