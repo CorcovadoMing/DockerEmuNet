@@ -11,8 +11,15 @@ def minishell():
             print yellow("*** NDN status", bold=True)
             print result
 	    print
+        elif cmd.split()[0] in ("ls", "cat", "mv", "cp", "clear"):
+            try:
+                result = local(cmd)
+            except:
+                pass
+            print
         else:
-            print cmd + ": Command not found"
+            print cmd + " command not found."
+            print
         minishell()
     except (KeyboardInterrupt, EOFError):
         print
