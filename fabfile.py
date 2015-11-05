@@ -38,10 +38,40 @@ def addHost(hosts):
     for h in hosts:
         local("docker run -d --name " + h + " rf37535/nfd nfd", capture=True)
 
+def parseTopo(topo):
+    parseflag = [False, False, False]
+    with open(topo) as f:
+        for lines in f:
+            line = lines.rstrip('\n')
+                  
+            if parseflag[0] and len(line.split()):
+                hosts.append(line.split()[0])
+            elif parseflag[1] and len(line.split()):
+                switches.append(line.split()[0])
+            elif parseflag[2] and len(line.split()):
+                fr, to = line.split()
+                links[fr] = to
+
+            if len(line.split()) and line.split()[0] == "[host]":
+                parseflag = [True, False, False]
+            elif len(line.split()) and line.split()[0] == "[switch]":
+                parseflag = [False, True, False]
+            elif len(line.split()) and line.split()[0] == "[link]":
+                parseflag = [False, False, True]
+            elif not len(line.split()):
+                parseflag = [False, False, False]
+
+           
+       
+
 def up(topo='', script=''):
     with hide('running'):
         if topo != '':
-            hosts, switches, links = parseTopo(topo)
+            parseTopo(topo)
+            print hosts
+            print switches
+            print links
+            minishell()
         else: # Default topology (h1 -- s1 -- s2 -- h2)       
             addSwitch(["s1", "s2"])
             local("sudo ip link add name s1-eth1 type veth peer name s2-eth1")
