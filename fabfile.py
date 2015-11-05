@@ -34,7 +34,7 @@ def addHost(hosts):
     for h in hosts:
         local("docker run -d --name " + h + " rf37535/nfd nfd", capture=True)
 
-def up():
+def up(topo='', script=''):
     with hide('running'):
         addSwitch(["s1", "s2"])
         local("sudo ip link add name s1-eth1 type veth peer name s2-eth1")

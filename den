@@ -1,0 +1,25 @@
+#!/bin/bash
+
+
+TOPOFILE=
+SCRIPTFILE=
+
+while [ "$#" -gt "0" ]
+do
+
+if [ "$1" = "--topo" ]; then
+	TOPOFILE=$2
+	shift 2
+fi
+
+if [ "$1" = "--script" ]; then
+	SCRIPTFILE=$2
+	shift 2
+fi
+
+done
+
+echo $TOPOFILE
+echo $SCRIPTFILE
+
+fab up:topo=$TOPOFILE,script=$SCRIPTFILE
