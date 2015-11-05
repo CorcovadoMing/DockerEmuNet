@@ -3,6 +3,10 @@ from fabric.api import local
 from fabric.colors import green, magenta, yellow
 from fabric.context_managers import hide
 
+hosts = []
+switches = []
+links = {}
+
 def minishell():
     try:
         cmd = raw_input("console> ")
@@ -36,14 +40,17 @@ def addHost(hosts):
 
 def up(topo='', script=''):
     with hide('running'):
-        addSwitch(["s1", "s2"])
-        local("sudo ip link add name s1-eth1 type veth peer name s2-eth1")
-        local("sudo ovs-vsctl add-port s1 s1-eth1")
-        local("sudo ovs-vsctl add-port s2 s2-eth1")
-        addHost(["h1", "h2"])
-        local("sudo pipework s1 -l s1-eth0 h1 192.168.1.2/24")
-        local("sudo pipework s2 -l s2-eth0 h2 192.168.1.3/24")
-        minishell()
+        if topo != '':
+            hosts, switches, links = parseTopo(topo)
+        else: # Default topology (h1 -- s1 -- s2 -- h2)       
+            addSwitch(["s1", "s2"])
+            local("sudo ip link add name s1-eth1 type veth peer name s2-eth1")
+            local("sudo ovs-vsctl add-port s1 s1-eth1")
+            local("sudo ovs-vsctl add-port s2 s2-eth1")
+            addHost(["h1", "h2"])
+            local("sudo pipework s1 -l s1-eth0 h1 192.168.1.2/24")
+            local("sudo pipework s2 -l s2-eth0 h2 192.168.1.3/24")
+            minishell()
 
 
 def down():
