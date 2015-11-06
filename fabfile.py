@@ -12,12 +12,13 @@ links = {}
 def minishell():
     try:
         cmd = raw_input("console> ")
-        if cmd == "status":
-            result = local("docker exec -it h1 nfd-status", capture=True)
-            print yellow("*** NDN status", bold=True)
-            print result
+        if cmd.split()[0] in hosts: # host commands
+            try:
+                local("docker exec -it " + cmd)
+            except:
+                pass # prevent the exit(!0)
 	    print
-        elif cmd.split()[0] in ("ls", "cat", "mv", "cp", "clear"):
+        elif cmd.split()[0] in ("ls", "cat", "mv", "cp", "clear"): # console reserve words
             try:
                 result = local(cmd)
             except:
