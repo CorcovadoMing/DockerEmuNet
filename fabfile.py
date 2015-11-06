@@ -15,9 +15,9 @@ def minishell():
         if cmd.split()[0] in hosts: # host commands
             try:
                 local("docker exec -it " + cmd)
-            except:
+	    except:
                 pass # prevent the exit(!0)
-	    print
+            print
         elif cmd.split()[0] in ("ls", "cat", "mv", "cp", "clear"): # console reserve words
             try:
                 result = local(cmd)
@@ -73,7 +73,7 @@ def addLink(links):
 
 def addHost(hosts):
     for h in hosts:
-        local("docker run -d --name " + h + " rf37535/nfd nfd", capture=True)
+        local("docker run -d -v `pwd`:`pwd` -w `pwd` --name " + h + " rf37535/nfd nfd", capture=True)
 
 def parseTopo(topo):
     parseflag = [False, False, False]
