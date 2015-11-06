@@ -73,7 +73,7 @@ def addLink(links):
 
 def addHost(hosts):
     for h in hosts:
-        local("docker run -d -v `pwd`:`pwd` -w `pwd` --name " + h + " rf37535/nfd nfd", capture=True)
+        local("docker run -d --log-driver=fluentd --log-opt fluentd-tag=den." + h + "  -v `pwd`:`pwd` -w `pwd` --name " + h + " rf37535/nfd nfd", capture=True)
 
 def parseTopo(topo):
     parseflag = [False, False, False]
