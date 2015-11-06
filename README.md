@@ -3,15 +3,56 @@
 
 ##### The purpose of this project is to emulate the different type of networking which include SDN and NDN by using the docker as the virtualized host
 
-### Features
+### Features:
 
 1. Able to emulate SDN (Software-Defined Network), NDN(Named-Data Network) or conventional network
 2. Isolated file system per host
 3. Support virtual network topology
 4. Integrate the log system (i.e. fluentd)
 
+### Usage:
 
-### Dependencies
+To run the default topology (h1 <--> s1 <--> s2 <--> h2)
+```
+./den
+```
+
+Also, you may want to pass your own topology configure file to it
+
+```
+./den --topo topo.config
+```
+
+The topology configuration file is defined as below
+
+```
+[host]
+h1  
+h2
+h3
+
+[switch]
+s1
+s2
+s3
+
+[link]
+h1 s1
+h2 s2
+h3 s3
+s1 s2
+s2 s3
+```
+
+which defines the topology
+
+```
+s1 <--> s2 <--> s3
+|       |       |
+h1      h2      h3
+```
+
+### Dependencies:
 
 1. Docker
 2. Open vSwitch
