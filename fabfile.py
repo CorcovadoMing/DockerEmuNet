@@ -36,6 +36,7 @@ def addSwitch(switches, mode="secure"):
     for s in switches:
         local("sudo ovs-vsctl add-br " + s)
         local("sudo ovs-vsctl set-fail-mode " + s + " " + mode)
+        local("sudo ovs-vsctl set-controller " + s + " tcp:127.0.0.1:6653")
 
 def addLink(links):
     global ips
