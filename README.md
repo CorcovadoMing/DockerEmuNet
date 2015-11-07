@@ -1,11 +1,11 @@
 # DockerEmuNet
 *Docker-based generic network emulator*
 
-##### The purpose of this project is to emulate the different type of networking which include SDN and NDN by using the docker as the virtualized host
+##### The purpose of this project is to emulate the different types of networking which includes SDN and NDN by using the docker as the virtualized host
 
 ### Features:
 
-1. Able to emulate SDN (Software-Defined Network), NDN(Named-Data Network) or conventional network
+1. Ability to emulate SDN (Software-Defined Network), NDN(Named-Data Network) or conventional network
 2. Isolated file system per host
 3. Support virtual network topology
 4. Integrate the log system (i.e. fluentd)
