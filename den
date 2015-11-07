@@ -10,11 +10,16 @@ do
 if [ "$1" = "--topo" ]; then
 	TOPOFILE=$2
 	shift 2
-fi
 
-if [ "$1" = "--script" ]; then
+elif [ "$1" = "--script" ]; then
 	SCRIPTFILE=$2
 	shift 2
+
+else
+	echo "Usage:"
+	echo "den [--topo topofile] [--script scriptfile]"
+        echo ""
+	exit 1
 fi
 
 done
