@@ -33,7 +33,7 @@ def minishell():
         down()
 
 def addController():
-    local("docker run -d --name floodlight -p 6653:6653 rf37535/floodlight")
+    local("docker run -d --name floodlight -p 6653:6653 rf37535/floodlight", capture=True)
 
 def addSwitch(switches, mode="secure"):
     for s in switches:
@@ -129,5 +129,8 @@ def down():
         print yellow("*** Clean the Open vSwitch", bold=True)
         local("sudo mn -c", capture=True)
         print yellow("*** Shut down the default controller", bold=True)
-        local("docker rm -f floodlight")
+        local("docker rm -f floodlight", capture=True)
         print yellow("*** bye", bold=True)
+
+
+
