@@ -8,6 +8,7 @@ switches = []
 ips = 2
 faces = {}
 links = {}
+controller_type = None
 
 def minishell():
     try:
@@ -36,7 +37,7 @@ def addController(controller):
     if controller == "floodlight":
         local("docker run -d --name floodlight -p 6653:6653 -p 8080:8080 rf37535/floodlight", capture=True)
     elif controller == "ryu":
-        local("docker run -d --name ryu -p 6653:6633 -p 8080:8080 -v `pwd`:/source -w `pwd`/controller/test rf37535/ryu ryu-manager app.py", capture=True)
+        local("docker run -d --name ryu -p 6653:6633 -p 8080:8080 -v `pwd`:/source -w /source/controller/test rf37535/ryu ryu-manager app.py", capture=True)
     else:
         print red("unknown controller type", bold=True)
 
@@ -82,7 +83,7 @@ def addLink(links):
 
 def addHost(hosts):
     for h in hosts:
-        local("docker run -d --log-driver=fluentd --log-opt fluentd-tag=den." + h + "  -v `pwd`:`pwd` -w `pwd` --name " + h + " rf37535/nfd nfd", capture=True)
+        local("docker run -d --net=none --log-driver=fluentd --log-opt fluentd-tag=den." + h + "  -v `pwd`:`pwd` -w `pwd` --name " + h + " rf37535/nfd nfd", capture=True)
 
 def parseTopo(topo):
     parseflag = [False, False, False]
@@ -109,7 +110,8 @@ def parseTopo(topo):
                 parseflag = [False, False, False]
 
 def up(topo='', script='',controller='floodlight'):
-    global hosts, switches, links, faces
+    global hosts, switches, links, faces, controller_type
+    controller_type = controller
     with hide('running'):
         if topo != '':
             parseTopo(topo)
@@ -118,7 +120,7 @@ def up(topo='', script='',controller='floodlight'):
             switches = ['s1', 's2']
             faces = {'s1':1, 's2':1}
             links = {'h1':'s1', 'h2':'s2', 's1':'s2'}
-        addController(controller)
+        addController(controller_type)
         addSwitch(switches)
         addHost(hosts)
         addLink(links)
@@ -134,11 +136,7 @@ def down():
         print yellow("*** Clean the Open vSwitch", bold=True)
         local("sudo mn -c", capture=True)
         print yellow("*** Shut down the default controller", bold=True)
-        try:
-            local("docker rm -f floodlight", capture=True)
-            local("docker rm -f ryu", capture=True)
-        except:
-            pass
+        local("docker rm -f " + controller_type, capture=True)
         print yellow("*** bye", bold=True)
 
 
