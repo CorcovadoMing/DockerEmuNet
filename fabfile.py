@@ -33,7 +33,7 @@ def minishell():
         down()
 
 def addController():
-    local("docker run -d --name floodlight -p 6653:6653 rf37535/floodlight", capture=True)
+    local("docker run -d --name floodlight -p 6653:6653 -p 8080:8080 rf37535/floodlight", capture=True)
 
 def addSwitch(switches, mode="secure"):
     for s in switches:
