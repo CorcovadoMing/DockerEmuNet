@@ -19,7 +19,4 @@ fi
 
 done
 
-echo $TOPOFILE
-echo $SCRIPTFILE
-
 fab up:topo=$TOPOFILE,script=$SCRIPTFILE
