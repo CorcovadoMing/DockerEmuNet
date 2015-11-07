@@ -32,6 +32,9 @@ def minishell():
         print
         down()
 
+def addController():
+    local("docker run -d --name floodlight -p 6653:6653 rf37535/floodlight")
+
 def addSwitch(switches, mode="secure"):
     for s in switches:
         local("sudo ovs-vsctl add-br " + s)
@@ -110,6 +113,7 @@ def up(topo='', script=''):
             switches = ['s1', 's2']
             faces = {'s1':1, 's2':1}
             links = {'h1':'s1', 'h2':'s2', 's1':'s2'}
+        addController()
         addSwitch(switches)
         addHost(hosts)
         addLink(links)
@@ -124,4 +128,6 @@ def down():
             local("docker rm -f " + _, capture=True)
         print yellow("*** Clean the Open vSwitch", bold=True)
         local("sudo mn -c", capture=True)
+        print yellow("*** Shut down the default controller", bold=True)
+        local("docker rm -f floodlight")
         print yellow("*** bye", bold=True)
