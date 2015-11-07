@@ -1,6 +1,6 @@
 from __future__ import with_statement
 from fabric.api import local
-from fabric.colors import green, magenta, yellow
+from fabric.colors import green, magenta, yellow, red
 from fabric.context_managers import hide
 
 hosts = []
@@ -32,8 +32,13 @@ def minishell():
         print
         down()
 
-def addController():
-    local("docker run -d --name floodlight -p 6653:6653 -p 8080:8080 rf37535/floodlight", capture=True)
+def addController(controller):
+    if controller == "floodlight"
+        local("docker run -d --name floodlight -p 6653:6653 -p 8080:8080 rf37535/floodlight", capture=True)
+    elif controller == "ryu"
+        local("docker run -d --name ryu -p 6653:6633 -p 8080:8080 -v `pwd`:/source -w `pwd`/controller/app rf37535/ryu ryu-manager app.py", capture=True)
+    else:
+        print red("unknown controller type", bold=True)
 
 def addSwitch(switches, mode="secure"):
     for s in switches:
@@ -103,7 +108,7 @@ def parseTopo(topo):
             elif not len(line.split()):
                 parseflag = [False, False, False]
 
-def up(topo='', script=''):
+def up(topo='', script='',controller='floodlight'):
     global hosts, switches, links, faces
     with hide('running'):
         if topo != '':
@@ -113,7 +118,7 @@ def up(topo='', script=''):
             switches = ['s1', 's2']
             faces = {'s1':1, 's2':1}
             links = {'h1':'s1', 'h2':'s2', 's1':'s2'}
-        addController()
+        addController(controller)
         addSwitch(switches)
         addHost(hosts)
         addLink(links)
@@ -129,7 +134,11 @@ def down():
         print yellow("*** Clean the Open vSwitch", bold=True)
         local("sudo mn -c", capture=True)
         print yellow("*** Shut down the default controller", bold=True)
-        local("docker rm -f floodlight", capture=True)
+        try:
+            local("docker rm -f floodlight", capture=True)
+            local("docker rm -f ryu", capture=True)
+        except:
+            pass
         print yellow("*** bye", bold=True)
 
 

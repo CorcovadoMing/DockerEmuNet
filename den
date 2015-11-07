@@ -3,6 +3,7 @@
 
 TOPOFILE=
 SCRIPTFILE=
+CONTROLLER=
 
 while [ "$#" -gt "0" ]
 do
@@ -15,13 +16,17 @@ elif [ "$1" = "--script" ]; then
 	SCRIPTFILE=$2
 	shift 2
 
+elif [ "$1" = "--controller" ]; then
+	CONTROLLER=$2
+	shift 2
+
 else
 	echo "Usage:"
-	echo "den [--topo topofile] [--script scriptfile]"
+	echo "den [--topo topofile] [--script scriptfile] [--controller <floodlight> <ryu>"
         echo ""
 	exit 1
 fi
 
 done
 
-fab up:topo=$TOPOFILE,script=$SCRIPTFILE
+fab up:topo=$TOPOFILE,script=$SCRIPTFILE,controller=$CONTROLLER
