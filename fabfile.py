@@ -33,9 +33,9 @@ def minishell():
         down()
 
 def addController(controller):
-    if controller == "floodlight"
+    if controller == "floodlight":
         local("docker run -d --name floodlight -p 6653:6653 -p 8080:8080 rf37535/floodlight", capture=True)
-    elif controller == "ryu"
+    elif controller == "ryu":
         local("docker run -d --name ryu -p 6653:6633 -p 8080:8080 -v `pwd`:/source -w `pwd`/controller/test rf37535/ryu ryu-manager app.py", capture=True)
     else:
         print red("unknown controller type", bold=True)
