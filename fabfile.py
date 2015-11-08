@@ -27,10 +27,15 @@ def minishell():
                     pass
                 print
             else:
+                print cmd + " command not found"
+                print 
                 print "Usage: Hostname command"
                 print
-                print "command:"
-                print "    install"
+                print "SDN-related commands"
+                print
+                print "NDN-related commands"
+                print "    install <app> -- Copy the application into host"
+                print "    exe <app>     -- Execute the application"
                 print
         elif isConsoleCommand(cmd):
             try:
@@ -39,7 +44,7 @@ def minishell():
                 pass
             print
         else:
-            print cmd + " command not found."
+            print cmd + " command not found"
             print
         minishell()
     except (KeyboardInterrupt, EOFError):
