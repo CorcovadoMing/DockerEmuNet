@@ -10,16 +10,22 @@ faces = {}
 links = {}
 controller_type = None
 
+def isHostCommand(cmd, hosts):
+    return cmd.split()[0] in hosts
+
+def isConsoleCommand(cmd):
+    return cmd.split()[0] in ("ls", "cat", "mv", "cp", "clear")
+
 def minishell():
     try:
         cmd = raw_input("console> ")
-        if cmd.split()[0] in hosts: # host commands
+        if isHostCommand(cmd, hosts):
             try:
                 local("docker exec -it " + cmd)
 	    except:
-                pass # prevent the exit(!0)
+                pass
             print
-        elif cmd.split()[0] in ("ls", "cat", "mv", "cp", "clear"): # console reserve words
+        elif isConsoleCommand(cmd):
             try:
                 result = local(cmd)
             except:
