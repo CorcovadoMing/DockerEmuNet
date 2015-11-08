@@ -3,7 +3,7 @@
 
 TOPOFILE=
 SCRIPTFILE=
-CONTROLLER=
+CONTROLLER="floodlight"
 
 while [ "$#" -gt "0" ]
 do

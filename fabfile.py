@@ -20,11 +20,18 @@ def minishell():
     try:
         cmd = raw_input("console> ")
         if isHostCommand(cmd, hosts):
-            try:
-                local("docker exec -it " + cmd)
-	    except:
-                pass
-            print
+            if len(cmd.split()) > 1:
+                try:
+                    local("docker exec -it " + cmd)
+	        except:
+                    pass
+                print
+            else:
+                print "Usage: Hostname command"
+                print
+                print "command:"
+                print "    install"
+                print
         elif isConsoleCommand(cmd):
             try:
                 result = local(cmd)
