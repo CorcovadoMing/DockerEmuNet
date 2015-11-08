@@ -27,6 +27,16 @@ def printHostCommandUsage():
     print "    exe <app>     -- Execute the application"
     print
 
+def printCommandUsage():
+    print 
+    print "Available commands:"
+    print "    ls"
+    print "    cat"
+    print "    mv"
+    print "    cp"
+    print "    clear"
+    print
+
 def minishell():
     try:
         cmd = raw_input("console> ")
@@ -46,6 +56,8 @@ def minishell():
                 result = local(cmd)
             except:
                 pass
+        elif cmd.split()[0] == "help":
+            printCommandUsage()
         else:
             print cmd + " command not found"
         print
