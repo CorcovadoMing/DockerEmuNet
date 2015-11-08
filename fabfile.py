@@ -16,36 +16,39 @@ def isHostCommand(cmd, hosts):
 def isConsoleCommand(cmd):
     return cmd.split()[0] in ("ls", "cat", "mv", "cp", "clear")
 
+def printHostCommandUsage():
+    print 
+    print "Usage: Hostname command"
+    print
+    print "SDN-related commands"
+    print
+    print "NDN-related commands"
+    print "    install <app> -- Copy the application into host"
+    print "    exe <app>     -- Execute the application"
+    print
+
 def minishell():
     try:
         cmd = raw_input("console> ")
         if isHostCommand(cmd, hosts):
             if len(cmd.split()) > 1:
-                try:
-                    local("docker exec -it " + cmd)
-	        except:
-                    pass
-                print
+                if cmd.split()[1] == "help":
+                    printHostCommandUsage()
+                else:
+                    try:
+                        local("docker exec -it " + cmd)
+	            except:
+                        pass
             else:
                 print cmd + " command not found"
-                print 
-                print "Usage: Hostname command"
-                print
-                print "SDN-related commands"
-                print
-                print "NDN-related commands"
-                print "    install <app> -- Copy the application into host"
-                print "    exe <app>     -- Execute the application"
-                print
         elif isConsoleCommand(cmd):
             try:
                 result = local(cmd)
             except:
                 pass
-            print
         else:
             print cmd + " command not found"
-            print
+        print
         minishell()
     except (KeyboardInterrupt, EOFError):
         print
