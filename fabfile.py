@@ -26,6 +26,8 @@ def printHostCommandUsage():
     print "    install <app> -- Copy the application into host"
     print "    run <app>     -- Execute the application"
     print "    serve <app>   -- Start a producer"
+    print "    stop <app>    -- Stop a producer"
+    print
 
 def printCommandUsage():
     print 
@@ -61,7 +63,17 @@ def minishell():
                         local("docker exec " + cmd.split()[0] + " /app/" + cmd.split()[2] + " &")
                     except:
                         pass
-                
+                elif cmd.split()[1] == "stop":
+                    try:
+                        pid = None
+                        ps = local("docker exec " + cmd.split()[0] + " ps", capture=True)
+                        ps = ps.split('\n')
+                        for _ in ps:
+                            if cmd.split()[2] in _:
+                                 pid = _.split()[0]
+                        local("docker exec " + cmd.split()[0] + " kill " + pid)
+                    except:
+                        pass
                 else:
                     try:
                         local("docker exec " + cmd)
