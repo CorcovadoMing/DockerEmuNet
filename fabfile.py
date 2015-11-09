@@ -61,9 +61,10 @@ def minishell():
                         local("docker exec " + cmd.split()[0] + " /app/" + cmd.split()[2] + " &")
                     except:
                         pass
+                
                 else:
                     try:
-                        local("docker exec -it " + cmd)
+                        local("docker exec " + cmd)
 	            except:
                         pass
             else:
