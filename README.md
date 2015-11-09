@@ -52,6 +52,21 @@ s1 <--> s2 <--> s3
 h1      h2      h3
 ```
 
+### SDN emulation:
+
+There are command-line options for SDN
+
+you could choice the controller type of the network, default is using floodlight,
+for now, there are only ryu controller alternatively
+
+```
+./den --controller ryu
+```
+
+and the current ryu controller is running the application in folder `controller/test/app.py`, you could find the official ryu examples in the `controller/example/` folder
+
+
+
 ### Dependencies:
 
 1. Docker
