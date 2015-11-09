@@ -24,7 +24,7 @@ def printHostCommandUsage():
     print
     print "NDN-related commands"
     print "    install <app> -- Copy the application into host"
-    print "    exe <app>     -- Execute the application"
+    print "    run <app>     -- Execute the application"
     print
 
 def printCommandUsage():
@@ -44,6 +44,11 @@ def minishell():
             if len(cmd.split()) > 1:
                 if cmd.split()[1] == "help":
                     printHostCommandUsage()
+                elif cmd.split()[1] == "install":
+                    try:
+                        local("docker cp " + cmd.split()[2] + " " + cmd.split()[0] + ":/app")
+                    except:
+                        pass
                 else:
                     try:
                         local("docker exec -it " + cmd)
@@ -116,7 +121,7 @@ def addLink(links):
 
 def addHost(hosts):
     for h in hosts:
-        local("docker run -d --net=none --log-driver=fluentd --log-opt fluentd-tag=den." + h + "  -v `pwd`:`pwd` -w `pwd` --name " + h + " rf37535/nfd nfd", capture=True)
+        local("docker run -d --net=none --log-driver=fluentd --log-opt fluentd-tag=den." + h + "  -v `pwd`:`pwd` -v /app -w `pwd` --name " + h + " rf37535/nfd nfd", capture=True)
 
 def parseTopo(topo):
     parseflag = [False, False, False]
