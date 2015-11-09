@@ -40,13 +40,20 @@ def printCommandUsage():
 def minishell():
     try:
         cmd = raw_input("console> ")
-        if isHostCommand(cmd, hosts):
+        if len(cmd.split()) == 0:
+            pass
+        elif isHostCommand(cmd, hosts):
             if len(cmd.split()) > 1:
                 if cmd.split()[1] == "help":
                     printHostCommandUsage()
                 elif cmd.split()[1] == "install":
                     try:
                         local("docker cp " + cmd.split()[2] + " " + cmd.split()[0] + ":/app")
+                    except:
+                        pass
+                elif cmd.split()[1] == "run":
+                    try:
+                        local("docker exec " + cmd.split()[0] + " /app/" + cmd.split()[2] + " &")
                     except:
                         pass
                 else:
@@ -65,7 +72,6 @@ def minishell():
             printCommandUsage()
         else:
             print cmd + " command not found"
-        print
         minishell()
     except (KeyboardInterrupt, EOFError):
         print
