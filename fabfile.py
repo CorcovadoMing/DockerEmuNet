@@ -25,7 +25,7 @@ def printHostCommandUsage():
     print "NDN-related commands"
     print "    install <app> -- Copy the application into host"
     print "    run <app>     -- Execute the application"
-    print
+    print "    serve <app>   -- Start a producer"
 
 def printCommandUsage():
     print 
@@ -52,6 +52,11 @@ def minishell():
                     except:
                         pass
                 elif cmd.split()[1] == "run":
+                    try:
+                        local("docker exec " + cmd.split()[0] + " /app/" + cmd.split()[2], capture=True)
+                    except:
+                        pass
+                elif cmd.split()[1] == "serve":
                     try:
                         local("docker exec " + cmd.split()[0] + " /app/" + cmd.split()[2] + " &")
                     except:
