@@ -145,7 +145,7 @@ def addLink(links):
 
 def addHost(hosts):
     for h in hosts:
-        local("docker run -d --net=none -v `pwd`:`pwd` -v /app -w `pwd` --name " + h + " rf37535/nfd nfd", capture=True)
+        local("docker run -d --net=none -v `pwd`:`pwd` -v /app -w `pwd` --name " + h + " rf37535/ndn nfd", capture=True)
 
 def parseTopo(topo):
     parseflag = [False, False, False]
